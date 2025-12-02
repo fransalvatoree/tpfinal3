@@ -4,163 +4,106 @@ let pantallaActual = 0;
 let mySound;
 let textos = [];
 
-//pantallas, imagenes, archivo de textos, musica
+let botonContinuar;
+let botonJugar;
+let botonCreditos;
+let botonVolver;
+let botonInstrucciones;
+
 function preload() {
+  // Cargar pantallas (0 a 13)
   for (let i = 0; i < 14; i++) {
-   pantallas[i] = loadImage("trabajoFran1/data/pantalla" + i + ".jpg");
-mySound = loadSound("trabajoFran1/data/cancion.mp3");
-textos = loadStrings("trabajoFran1/data/texto.txt");
+    pantallas[i] = loadImage("trabajoFran1/data/pantalla" + i + ".jpg");
+  }
+
+  // Cargar música
+  mySound = loadSound("trabajoFran1/data/cancion.mp3");
+
+  // Cargar textos
+  textos = loadStrings("trabajoFran1/data/texto.txt");
 }
 
-//lienzo
 function setup() {
-  createCanvas(640, 480);
+  createCanvas(800, 600);
+
+  // Botones
+  botonContinuar = createButton("CONTINUAR");
+  botonContinuar.position(50, 520);
+  botonContinuar.mousePressed(() => cambiarPantalla(1));
+
+  botonJugar = createButton("JUGAR");
+  botonJugar.position(50, 520);
+  botonJugar.mousePressed(() => cambiarPantalla(1));
+
+  botonCreditos = createButton("CRÉDITOS");
+  botonCreditos.position(200, 520);
+  botonCreditos.mousePressed(() => cambiarPantalla(2));
+
+  botonInstrucciones = createButton("INSTRUCCIONES");
+  botonInstrucciones.position(350, 520);
+  botonInstrucciones.mousePressed(() => cambiarPantalla(3));
+
+  botonVolver = createButton("VOLVER");
+  botonVolver.position(500, 520);
+  botonVolver.mousePressed(() => cambiarPantalla(0));
+
+  // Música automática
+  mySound.setVolume(0.5);
+  mySound.loop();
 }
 
-//textos
 function draw() {
-  background(200);
-  image(pantallas[pantallaActual], 0, 0, 640, 480);
-  let textoActual = textos[pantallaActual];
-  let textoAncho = 600; // Ancho máximo para el texto
-  let textoAlto = 60; // Altura del rectángulo
-  let rectX = 20; // Posición X del rectángulo
-  let rectY = 45; // Posición Y del rectángulo
-  fill(178, 195, 255);
-  rect(rectX, rectY, textoAncho + 10, textoAlto + 1); 
-  fill(0)
-  noStroke();
-  textSize(18);
-  textAlign(CENTER);
-  text(textoActual, rectX + 5, rectY + 5, textoAncho, textoAlto);
-  
-//botones en sus respectivas pantallas
+  background(0);
+
+  // Mostrar pantalla actual
+  image(pantallas[pantallaActual], 0, 0, width, height);
+
+  // Mostrar texto si existe
+  if (textos[pantallaActual]) {
+    fill(255);
+    textSize(20);
+    text(textos[pantallaActual], 30, 50);
+  }
+
+  actualizarBotones();
+}
+
+// Cambiar pantalla de forma segura
+function cambiarPantalla(nuevaPantalla) {
+  // nunca ir a una pantalla que no existe
+  if (nuevaPantalla >= 0 && nuevaPantalla <= 13) {
+    pantallaActual = nuevaPantalla;
+  }
+}
+
+function actualizarBotones() {
+  // Ocultar todos
+  botonJugar.hide();
+  botonContinuar.hide();
+  botonCreditos.hide();
+  botonInstrucciones.hide();
+  botonVolver.hide();
+
+  // Según pantalla
   if (pantallaActual === 0) {
-    mostrarBotonesInicio();
-  } else if (pantallaActual === 2) {
-    mostrarBotonAvanzar();
-  } else if (pantallaActual === 3) {
-    mostrarBotonAvanzar();
-  } else if (pantallaActual === 4) {
-    mostrarBotonesLaencuentraNolaencuentra();
-  } else if (pantallaActual === 5 || pantallaActual === 9 || pantallaActual === 10 || pantallaActual === 12 || pantallaActual === 13 || pantallaActual === 14 ) { 
-    mostrarBotonReiniciar();
-  } else if (pantallaActual === 7 || pantallaActual === 12 ) {
-    mostrarBotonesEspectaculoDesaparece();
-  } else if (pantallaActual === 1 || pantallaActual === 6 || pantallaActual === 7 || pantallaActual === 8 || pantallaActual === 11 || pantallaActual === 13) {
-    mostrarBotonAvanzar();
-  } else if (pantallaActual === 13) {
-    mostrarBotonAtras();
-}
+    botonJugar.show();
+    botonCreditos.show();
+    botonInstrucciones.show();
+  }
+
+  if (pantallaActual >= 1 && pantallaActual <= 12) {
+    botonContinuar.show();
+  }
+
+  if (pantallaActual === 2 || pantallaActual === 3) {
+    botonVolver.show();
+  }
+
+  if (pantallaActual === 13) {
+    botonVolver.show();
+  }
 }
 
-//botones
-function dibujarBoton(x, y, ancho, alto, colorRelleno, colorTexto, texto) {
-  fill(colorRelleno);
-  rect(x, y, ancho, alto);
-  fill(colorTexto);
-  textSize(16);
-  textAlign(CENTER, CENTER);
-  text(texto, x + ancho / 2, y + alto / 2);
-}
-function mostrarBotonesInicio() {
-  dibujarBoton(150, 400, 150, 50, color(255, 0, 0), color(255), "Iniciar aventura");
-  dibujarBoton(400, 400, 150, 50, color(0, 255, 78), color(255), "Creditos");
-}
 
-function mostrarBotonReiniciar() {
-  dibujarBoton(250, 400, 140, 50, color(255, 188, 0), color(0), "Reiniciar");
-}
-
-function mostrarBotonesLaencuentraNolaencuentra() {
-  dibujarBoton(150, 400, 150, 50, color(255, 0, 0), color(255), "La encuentra");
-  dibujarBoton(400, 400, 150, 50, color(0, 255, 44), color(0), "No la encuentra");
-}
-
-function mostrarBotonesEspectaculoDesaparece() {
-  dibujarBoton(150, 400, 160, 60, color(0, 255, 0), color(255), "\nEspectaculo \nen el cielo");
-  dibujarBoton(400, 400, 160, 60, color(255, 0, 0), color(255), "\nLlega su madre \ny todo desaparece");
-}
-function mostrarBotonAvanzar() {
-  dibujarBoton(500, 400, 100, 50, color(254, 255, 0), color(0), "Siguiente");
-} 
-
-//Interaccion
-function clicEnBoton(x, y, ancho, alto) {
-  return mouseX > x && mouseX < x + ancho && mouseY > y && mouseY < y + alto;
-}
-function mousePressed() {
-  if (pantallaActual === 0) {
-    if (clicEnBoton(150, 400, 150, 50)) {
-      pantallaActual = 1;
-    } else if (clicEnBoton(400, 400, 150, 50)) {
-      pantallaActual = 13;
-      if (!mySound.isPlaying()) {
-        mySound.loop();
-      }
-    }
-  } else if (pantallaActual === 13) {
-    if (clicEnBoton(250, 400, 140, 50)) {
-      pantallaActual = 0;
-      mySound.stop();
-    }
-  } else if (pantallaActual === 1) {
-    if (clicEnBoton(500, 400, 100, 50)) {
-      pantallaActual = 2;
-    }
-  } else if (pantallaActual === 2) {
-    if (clicEnBoton(500, 400, 100, 50)) {
-      pantallaActual = 3;
-    }
-  } else if (pantallaActual === 3) {
-    if (clicEnBoton(500, 400, 100, 50)) {
-      pantallaActual = 4;
-    }
-  } else if (pantallaActual === 4) {
-    if (clicEnBoton(150, 400, 100, 50)) {
-      pantallaActual = 5;
-    } else if (clicEnBoton(400, 400, 100, 50)) {
-     pantallaActual = 6;
-    } 
-  } else if (pantallaActual === 5) {
-      if (clicEnBoton(250, 400, 140, 50)) {
-      pantallaActual = 0;
-    }
-  } else if (pantallaActual === 6) {
-    if (clicEnBoton(500, 400, 100, 50)) {
-      pantallaActual = 7;
-    }
-  } else if (pantallaActual === 7) {
-     if (clicEnBoton(150, 400, 150, 50)) {
-      pantallaActual = 8;
-    } else if (clicEnBoton(400, 400, 150, 50)) {
-     pantallaActual = 9;
-    }
-  } else if (pantallaActual === 8) {
-    if (clicEnBoton(500, 400, 100, 50)) {
-      pantallaActual = 10;
-    }
-  } else if (pantallaActual === 9) {
-    if (clicEnBoton(250, 400, 140, 50)) {
-      pantallaActual = 0;
-    }
-  } else if (pantallaActual === 10) {
-    if (clicEnBoton(250, 400, 140, 50)) {
-      pantallaActual = 0;
-    } 
-  } else if (pantallaActual === 11) {
-    if (clicEnBoton(500, 400, 100, 50)) {
-      pantallaActual = 12;
-    }
-  } else if (pantallaActual === 12) {
-    if (clicEnBoton(250, 400, 140, 50)) {
-      pantallaActual = 0;
-    }
-  } else if (pantallaActual === 13) {
-    if (clicEnBoton(500, 400, 100, 50)) {
-      pantallaActual = 14;
-    }
-}
-}
 
 
