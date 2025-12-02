@@ -13,7 +13,7 @@ let botonInstrucciones;
 function preload() {
   // Cargar pantallas (0 a 13)
   for (let i = 0; i < 14; i++) {
-    pantallas[i] = loadImage("data/pantalla" + i + ".jpg");
+    pantallas[i] = loadImage("data/pantalla" + i + ".jpeg");
   }
 
   // Cargar música
@@ -105,6 +105,7 @@ function actualizarBotones() {
     botonVolver.show();
   }
 }
+
 
 
 
