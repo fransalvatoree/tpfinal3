@@ -164,7 +164,7 @@ function mostrarPantallaCreditos() {
   fill(255);
   textSize(20);
   textAlign(CENTER, CENTER);
-  text("Zoe Varrone y Pia Sena Ikes, Comisión 2", width / 2, 200);
+  text("Francesca Salvatore Francisco Idilli, Comisión 2", width / 2, 200);
 
   botonVolver.mostrar();
 
@@ -177,3 +177,4 @@ function mostrarPantallaCreditos() {
     sonido.stop();
   }
 }
+
