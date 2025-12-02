@@ -6,10 +6,10 @@ let textos = [];
 // PRELOAD: imágenes + textos
 function preload() {
   for (let i = 0; i < 14; i++) {
-    pantallas[i] = loadImage("data/pantalla" + i + ".jpeg");
+    pantallas[i] = loadImage("./data/pantalla" + i + ".jpeg");
   }
 
-  textos = loadStrings("data/texto.txt");
+  textos = loadStrings("./data/texto.txt");
 }
 
 // CANVAS
@@ -137,6 +137,7 @@ function mousePressed() {
   // CRÉDITOS
   else if (pantallaActual === 13 && clicEnBoton(250, 400, 140, 50)) pantallaActual = 0;
 }
+
 
 
 
