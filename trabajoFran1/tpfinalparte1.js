@@ -2,14 +2,19 @@
 let pantallas = [];
 let pantallaActual = 0;
 let textos = [];
+let cancion;
 
-// PRELOAD: imágenes + textos
+// PRELOAD: imágenes + textos + sonido
 function preload() {
   for (let i = 0; i < 14; i++) {
     pantallas[i] = loadImage("./data/pantalla" + i + ".jpeg");
   }
 
   textos = loadStrings("./data/texto.txt");
+
+  // cargar sonido
+  soundFormats('mp3');
+  cancion = loadSound("./data/cancion.mp3");
 }
 
 // CANVAS
@@ -21,7 +26,6 @@ function setup() {
 function draw() {
   background(200);
 
-  // Imagen
   image(pantallas[pantallaActual], 0, 0, 640, 480);
 
   // Texto
@@ -50,45 +54,14 @@ function draw() {
   }
 }
 
-// BOTONES
-function dibujarBoton(x, y, ancho, alto, colorRelleno, colorTexto, texto) {
-  fill(colorRelleno);
-  rect(x, y, ancho, alto);
-  fill(colorTexto);
-  textSize(16);
-  textAlign(CENTER, CENTER);
-  text(texto, x + ancho / 2, y + alto / 2);
-}
-
-function mostrarBotonesInicio() {
-  dibujarBoton(150, 400, 150, 50, color(255, 0, 0), color(255), "Iniciar aventura");
-  dibujarBoton(400, 400, 150, 50, color(0, 255, 78), color(255), "Creditos");
-}
-
-function mostrarBotonReiniciar() {
-  dibujarBoton(250, 400, 140, 50, color(255, 188, 0), color(0), "Reiniciar");
-}
-
-function mostrarBotonesLaencuentraNolaencuentra() {
-  dibujarBoton(150, 400, 150, 50, color(255, 0, 0), color(255), "La encuentra");
-  dibujarBoton(400, 400, 150, 50, color(0, 255, 44), color(0), "No la encuentra");
-}
-
-function mostrarBotonesEspectaculoDesaparece() {
-  dibujarBoton(150, 400, 160, 60, color(0, 255, 0), color(255), "Espectáculo\nen el cielo");
-  dibujarBoton(400, 400, 160, 60, color(255, 0, 0), color(255), "Llega su madre\ny todo desaparece");
-}
-
-function mostrarBotonAvanzar() {
-  dibujarBoton(500, 400, 100, 50, color(254, 255, 0), color(0), "Siguiente");
-}
-
-// CLICK
-function clicEnBoton(x, y, ancho, alto) {
-  return mouseX > x && mouseX < x + ancho && mouseY > y && mouseY < y + alto;
-}
-
+// CLICK GENERAL
 function mousePressed() {
+
+  // ▶️ ARRANCAR LA MÚSICA DESDE EL PRIMER CLICK
+  if (!cancion.isPlaying()) {
+    cancion.setLoop(true);
+    cancion.play();
+  }
 
   // PANTALLA 0
   if (pantallaActual === 0) {
@@ -137,8 +110,6 @@ function mousePressed() {
   // CRÉDITOS
   else if (pantallaActual === 13 && clicEnBoton(250, 400, 140, 50)) pantallaActual = 0;
 }
-
-
 
 
 
